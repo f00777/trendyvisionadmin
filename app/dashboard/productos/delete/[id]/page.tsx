@@ -14,16 +14,19 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useParams } from "next/navigation"
 import { use, useEffect, useState } from "react";
+import Spinner from "@/components/ads/Spinner";
 
 export default function deleteProduct() {
 
     const [product, setProduct] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(false)
 
     const params = useParams();
     const id = params.id;
 
     useEffect(() => {
         async function fetchData(){
+            setIsLoading(true)
             const response = await fetch(`/api/productos/${id}`);
             if(!response.ok) {
                 console.error("Error fetching product data");
@@ -33,6 +36,7 @@ export default function deleteProduct() {
             console.log("response", response);
 
             setProduct(await response.json());
+            setIsLoading(false)
         }
 
         if (!id) {
@@ -40,13 +44,26 @@ export default function deleteProduct() {
         }
 
         fetchData();
-        console.log("product", product);
     }, [])
 
 
-    function handleDelete() {
-        fetch(`/api/productos/${id}`)
+    async function handleDelete() {
+        await fetch(`/api/productos/${id}`, {
+            method: 'DELETE'
+        }) 
 
+        window.location.href = "/dashboard/productos"
+
+    }
+
+    if(isLoading){
+        return (
+            <>
+                <div className="mx-auto flex items-center justify-center min-h-screen">
+                    <Spinner />
+                </div>
+            </>
+        )
     }
 
 

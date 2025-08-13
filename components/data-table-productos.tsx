@@ -74,27 +74,26 @@ import {
   Tabs,
   TabsContent
 } from "@/components/ui/tabs"
-import { DeleteCard } from "./ads/DeleteCard"
 
 export const schema = z.object({
   id: z.number(),
   nombre: z.string(),
-  stock: z.number(),
-  imagen: z.string(),
+  inventario: z.number(),
+  imagenes: z.any(),
 })
 
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
   {
-    accessorKey: "imagen",
+    accessorKey: "imagenes",
     header: "Imagen",
     cell: ({ row }) => {
       return (
         <div className="">
-          <img
-            src={row.original.imagen}
+            <img
+            src={row.original.imagenes.main}
             alt="Producto"
             className="object-cover rounded border"
-          />
+          />  
         </div>
       );
     },
@@ -121,11 +120,11 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     },
   },
   {
-    accessorKey: "stock",
+    accessorKey: "inventario",
     header: "Stock",
     cell: ({ row }) => (
       <div>
-        {row.original.stock}
+        {row.original.inventario}
       </div>
     ),
   },
@@ -134,7 +133,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     header: () => <div className="w-full text-center">Acciones</div>,
     cell: ({ row }) => (
       <div className="flex items-center justify-center gap-10">
-        <Button onClick={()=> {window.location.href = ""}} variant={"outline"}>Editar</Button>
+        <Button onClick={()=> {window.location.href = `/dashboard/productos/editar/${row.original.id}`}} variant={"outline"}>Editar</Button>
         <Button onClick={()=> {window.location.href = `/dashboard/productos/delete/${row.original.id}`}} variant={"destructive"}>Eliminar</Button>
       </div>
     ),

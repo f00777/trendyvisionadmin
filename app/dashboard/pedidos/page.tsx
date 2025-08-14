@@ -1,21 +1,22 @@
 "use client"
 
-import { DataTable } from "@/components/data-table-productos";
+import { DataTable } from "@/components/data-table-recibos";
 import { useEffect, useState } from "react";
 import Spinner from "@/components/ads/Spinner";
 
-export default function Productos(){
-    const [products, setProducts] = useState<any>([])
+export default function Pedidos(){
+    const [pedidos, setPedidos] = useState<any>([])
     const [loading, setIsLoading] = useState(true)
 
     useEffect(()=>{
         async function getProducts(){
             try {
                 setIsLoading(true)
-                const res = await fetch("/api/productos")
+                const res = await fetch("/api/recibos")
                 const p = await res.json()
-                setProducts(p)
+                setPedidos(p)
                 setIsLoading(false)
+                console.log(pedidos)
             } catch (error) {
                 setIsLoading(false)
                 console.log(error)
@@ -37,7 +38,7 @@ export default function Productos(){
 
     return (
         <>
-        <DataTable data={products} tabname={"Producto"} columnas={undefined} />
+        <DataTable data={pedidos} />
         </>
     )
 }

@@ -2,7 +2,7 @@ import db from "@/app/api/db"
 import { NextResponse } from "next/server";
 
 export async function GET(request){
-    const res = await db`SELECT * FROM productos WHERE activo = true`;
+    const res = await db`SELECT * FROM recibos ORDER BY fecha DESC`;
     if(res.length > 0) {
         return new Response(JSON.stringify(res), {
             status: 200,

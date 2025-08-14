@@ -77,31 +77,13 @@ import {
 
 export const schema = z.object({
   id: z.number(),
-  nombre: z.string(),
-  precio: z.number(),
-  inventario: z.number(),
-  imagenes: z.any(),
+  usuario_email: z.string(),
+  fecha: z.string(),
+  total: z.any(),
+  estado: z.string(),
 })
 
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
-  {
-    accessorKey: "imagenes",
-    header: "Imagen",
-    cell: ({ row }) => {
-      return (
-        <div className="">
-            <img
-            src={row.original.imagenes[0]}
-            alt="Producto"
-            className="object-cover rounded border"
-          />  
-        </div>
-      );
-    },
-    /* cell: ({ row }) => {
-      return <TableCellViewer item={row.original} />
-    } */
-  },
   {
     accessorKey: "id",
     header: "ID",
@@ -114,25 +96,36 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     },
   },
   {
-    accessorKey: "nombre",
-    header: "Nombre",
+    accessorKey: "usuario_email",
+    header: "Usuario",
     cell: ({ row }) => {
-      return row.original.nombre
+      return row.original.usuario_email
     },
   },
   {
-    accessorKey: "precio",
-    header: "Precio",
-    cell: ({ row }) => {
-      return `$${row.original.precio.toLocaleString("es-ES")}`
-    },
-  },
-  {
-    accessorKey: "inventario",
-    header: "Stock",
+    accessorKey: "fecha",
+    header: "Fecha",
     cell: ({ row }) => (
       <div>
-        {row.original.inventario}
+        {row.original.fecha}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "total",
+    header: "Total",
+    cell: ({ row }) => (
+      <div>
+        ${row.original.total.toLocaleString("es-ES")}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "estado",
+    header: "Estado",
+    cell: ({ row }) => (
+      <div>
+        {row.original.estado}
       </div>
     ),
   },
@@ -141,8 +134,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     header: () => <div className="w-full text-center">Acciones</div>,
     cell: ({ row }) => (
       <div className="flex items-center justify-center gap-10">
-        <Button onClick={()=> {window.location.href = `/dashboard/productos/editar/${row.original.id}`}} variant={"outline"}>Editar</Button>
-        <Button onClick={()=> {window.location.href = `/dashboard/productos/delete/${row.original.id}`}} variant={"destructive"}>Eliminar</Button>
+        <Button onClick={()=> {window.location.href = `/dashboard/productos/editar/${row.original.id}`}} variant={"default"}>Ver/Editar</Button>
       </div>
     ),
   }
@@ -175,12 +167,8 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
 
 export function DataTable({
   data: initialData,
-  tabname,
-  columnas
 }: {
   data: z.infer<typeof schema>[],
-  tabname: string,
-  columnas: any
 }) {
 
   const [data, setData] = React.useState(() => initialData)

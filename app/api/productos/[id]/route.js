@@ -1,4 +1,5 @@
 import db  from "@/app/api/db";
+import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
     const { id } = params;
@@ -33,3 +34,29 @@ export async function DELETE(request, { params }) {
         });
     }
 }
+
+
+export async function PUT(req, {params}){
+    try {
+        const id = params.id; // ID de la URL
+        const body = await req.json();
+
+        await db`UPDATE productos SET nombre=${body.nombre}, precio=${body.precio}, inventario = ${body.inventario}, descripcion = ${body.descipcion} WHERE id=${id}`;
+
+        return NextResponse.json(
+        { message: "Producto actualizado con éxito", producto: body },
+        { status: 200 }
+        );
+
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json(
+            { error: "Error al procesar la solicitud" },
+            { status: 500 }
+        );
+    }
+}
+
+
+
+

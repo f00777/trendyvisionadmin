@@ -19,7 +19,7 @@ import Spinner from "@/components/ads/Spinner";
 export default function deleteProduct() {
 
     const [product, setProduct] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
 
     const params = useParams();
     const id = params.id;

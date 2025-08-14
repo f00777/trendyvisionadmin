@@ -11,33 +11,14 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 export default function editProduct() {
     const [inputCount, setInputCount] = useState(1);
-    const [product, setProduct] = useState<any>(null);
+    const [product, setProduct] = useState<any>({
+        nombre: "",
+        inventario: "",
+        precio: 0,
+        descripcion: ""
+    });
     const [files, setFiles] = useState<(File | null)[]>([]);
-    const [isLoading, setIsLoading] = useState(true)
-    const [isChecked, setIsChecked] = useState(false);
-
-    const params = useParams();
-    const id = params.id;
-
-    useEffect(() => {
-        async function fetchData(){
-            setIsLoading(true)
-            const response = await fetch(`/api/productos/${id}`);
-            if(!response.ok) {
-                console.error("Error fetching product data");
-                window.location.href = "/dashboard/productos";
-            }
-
-            setProduct(await response.json());
-            setIsLoading(false)
-        }
-
-        if (!id) {
-            window.location.href = "/dashboard/productos";
-        }
-
-        fetchData();
-    }, []) 
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleFileChange = (index: number, file: File | null) => {
 
@@ -55,44 +36,42 @@ export default function editProduct() {
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault()
 
-
         try {
-            const res = await fetch(`/api/productos/${id}`, {
-            method: "PUT",
+            let res = await fetch(`/api/productos`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(product),
             });
 
-            if (!res.ok) throw new Error("Error al actualizar producto");
-            const data = await res.json();
-            console.log("Producto actualizado:", data);
-        } catch (error) {
-            console.error(error);
-        }
-
-        
-        if(isChecked){
+            if (!res.ok) throw new Error("Error al crear producto");
+            let data = await res.json();
+            
+            
             const formData = new FormData();
             files.forEach((file) => {
                 if (file) formData.append("images", file);
             });
 
-            if(!id){
+            if(!data.producto.id){
                 return;
             }
-            formData.append("id", String(id));
+            formData.append("id", String(data.producto.id));
             
-            const res = await fetch("/api/upload-images", {
+            res = await fetch("/api/upload-images", {
             method: "PUT",
             body: formData,
             });
 
-            const data = await res.json();
+            data = await res.json();
             console.log("Respuesta del servidor:", data);
+
+        } catch (error) {
+            console.error(error);
         }
-        window.location.href = "/dashboard/productos" 
+
+        window.location.href = "/dashboard/productos"
     };
 
     if(isLoading){
@@ -142,19 +121,8 @@ export default function editProduct() {
 
             </Textarea>
 
-            <div className="flex items-center gap-3">
-                <Checkbox
-                id="terms"
-                checked={isChecked}
-                onCheckedChange={(checked) => setIsChecked(!!checked)}
-                />
-                <Label htmlFor="terms">¿Desea actualizar las imagenes? Todas las imagenes serán cambiadas a las que usted ponga ahora</Label>
-            </div>
-
             {Array.from({ length: inputCount }).map((_, index) => (
                 <div key={index}>
-                {isChecked ? (
-                <>
                     <Label>
                         Seleccione una imagen
                     </Label>
@@ -165,9 +133,6 @@ export default function editProduct() {
                         handleFileChange(index, e.target.files?.[0] || null)
                         }
                     />
-                </>
-                ) : (<></>)}
-                
                 </div>
             ))}
 

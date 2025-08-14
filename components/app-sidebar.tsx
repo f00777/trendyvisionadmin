@@ -30,17 +30,17 @@ const data = {
   navMain: [
     {
       title: "General",
-      url: "#",
+      url: "/dashboard/general",
       icon: IconDashboard,
     },
     {
       title: "Productos",
-      url: "#",
+      url: "/dashboard/productos",
       icon: IconListDetails,
     },
     {
       title: "Pedidos",
-      url: "#",
+      url: "/dashboard/pedidos",
       icon: IconChartBar,
     }
   ],

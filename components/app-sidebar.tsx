@@ -23,9 +23,9 @@ import logo from "@/public/logoSinLetra.png"
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "Admin",
+    email: "admin@trendyvision.cl",
+    avatar: "",
   },
   navMain: [
     /* {

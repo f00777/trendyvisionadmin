@@ -70,3 +70,20 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ loggedIn: false });
   }
 }
+
+export async function DELETE() {
+  const res = NextResponse.json({ message: "Sesión cerrada" });
+
+  // Borra la cookie
+  res.cookies.set({
+    name: "auth_token",
+    value: "",
+    maxAge: 0,
+    path: "/",
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
+
+  return res;
+}

@@ -28,11 +28,11 @@ const data = {
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
-    {
+    /* {
       title: "General",
       url: "/dashboard/general",
       icon: IconDashboard,
-    },
+    }, */
     {
       title: "Productos",
       url: "/dashboard/productos",

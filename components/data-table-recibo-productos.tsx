@@ -77,16 +77,17 @@ import {
 
 export const schema = z.object({
   id: z.number(),
-  usuario_email: z.string(),
-  fecha: z.string(),
-  total: z.any(),
-  estado: z.string(),
+  producto_id: z.number(),
+  imagenes: z.any(),
+  nombre: z.string(),
+  cantidad: z.number(),
+  precio_unitario: z.number(),
 })
 
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
   {
     accessorKey: "id",
-    header: "ID",
+    header: "Recib_ID",
     cell: ({ row }) => {
       return (
         <div className="w-full text-center">
@@ -96,48 +97,54 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     },
   },
   {
-    accessorKey: "usuario_email",
-    header: "Usuario",
+    accessorKey: "producto_id",
+    header: "Prod_ID",
     cell: ({ row }) => {
-      return row.original.usuario_email
+      return row.original.producto_id
     },
   },
   {
-    accessorKey: "fecha",
-    header: "Fecha",
+    accessorKey: "imagenes",
+    header: "Imagen",
+    cell: ({ row }) => {
+      return (
+        <div className="">
+            <img
+            src={row.original.imagenes[0]}
+            alt="Producto"
+            className="object-contain mx-auto h-[60px] w-auto rounded border"
+          />  
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "nombre",
+    header: "Nombre",
     cell: ({ row }) => (
       <div>
-        {row.original.fecha}
+        {row.original.nombre}
       </div>
     ),
   },
   {
-    accessorKey: "total",
-    header: "Total",
+    accessorKey: "cantidad",
+    header: "Cantidad",
     cell: ({ row }) => (
       <div>
-        ${row.original.total.toLocaleString("es-ES")}
+        {row.original.cantidad}
       </div>
     ),
   },
   {
-    accessorKey: "estado",
-    header: "Estado",
+    accessorKey: "Precio Unitario",
+    header: "Precio U",
     cell: ({ row }) => (
       <div>
-        {row.original.estado}
+        ${row.original.precio_unitario.toLocaleString("es-ES")}
       </div>
     ),
   },
-  {
-    accessorKey: "target",
-    header: () => <div className="w-full text-center">Acciones</div>,
-    cell: ({ row }) => (
-      <div className="flex items-center justify-center gap-10">
-        <Button onClick={()=> {window.location.href = `/dashboard/pedidos/${row.original.id}`}} variant={"default"}>Ver/Editar</Button>
-      </div>
-    ),
-  }
 ]
 
 function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
@@ -242,6 +249,7 @@ export function DataTable({
         <Label htmlFor="view-selector" className="sr-only">
           View
         </Label>
+        
       </div>
       <TabsContent
         value="outline"

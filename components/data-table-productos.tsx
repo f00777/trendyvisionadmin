@@ -93,7 +93,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
       return (
         <div className="">
             <img
-            src={`${CONTENT_URL}${row.original.imagenes[0]}`}
+            src={`${CONTENT_URL}/${row.original.imagenes[0]}`}
             alt="Producto"
             className="object-cover rounded border"
           />  

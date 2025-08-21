@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
       path: "/",
       sameSite: "none",
       secure: true,
+      domain: ".trendyvision.cl"
     });
 
     return res;

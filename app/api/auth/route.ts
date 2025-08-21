@@ -40,8 +40,8 @@ export async function POST(req: NextRequest) {
       httpOnly: true,
       maxAge: 3 * 60 * 60,
       path: "/",
-      sameSite: "lax",
-      secure: false,
+      sameSite: "none",
+      secure: true,
     });
 
     return res;
@@ -81,8 +81,8 @@ export async function DELETE() {
     maxAge: 0,
     path: "/",
     httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none",
   });
 
   return res;

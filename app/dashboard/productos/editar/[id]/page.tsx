@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox"
 
+const CONTENT_URL = process.env.CONTENT_URL || 'http://localhost:3003'
+
 export default function editProduct() {
     const [inputCount, setInputCount] = useState(1);
     const [product, setProduct] = useState<any>(null);
@@ -84,7 +86,7 @@ export default function editProduct() {
             }
             formData.append("id", String(id));
             
-            const res = await fetch("/api/upload-images", {
+            const res = await fetch(`${CONTENT_URL}/api/upload`, {
             method: "PUT",
             body: formData,
             });

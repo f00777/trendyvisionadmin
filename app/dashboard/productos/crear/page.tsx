@@ -9,6 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox"
 
+
+const CONTENT_URL = process.env.CONTENT_URL || 'http://localhost:3003'
+
 export default function editProduct() {
     const [inputCount, setInputCount] = useState(1);
     const [product, setProduct] = useState<any>({
@@ -43,7 +46,7 @@ export default function editProduct() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(product),
-            });
+            }); 
 
             if (!res.ok) throw new Error("Error al crear producto");
             let data = await res.json();
@@ -58,20 +61,39 @@ export default function editProduct() {
                 return;
             }
             formData.append("id", String(data.producto.id));
-            
-            res = await fetch("/api/upload-images", {
+
+            const prod_id = data.producto.id;
+
+            res = await fetch(`${CONTENT_URL}/api/upload`, {
             method: "PUT",
             body: formData,
+            credentials: 'include'
             });
 
             data = await res.json();
-            console.log("Respuesta del servidor:", data);
+
+            const imagenes = data.images;
+
+            const obj_imagenes = {
+                id : prod_id,
+                images: imagenes 
+            }
+
+            res = await fetch("/api/upload-images", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(obj_imagenes)
+            });
+
+            console.log("Respuesta del servidor:", await res.json());
 
         } catch (error) {
             console.error(error);
         }
 
-        window.location.href = "/dashboard/productos"
+        window.location.href = "/dashboard/productos" 
     };
 
     if(isLoading){

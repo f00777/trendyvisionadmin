@@ -6,7 +6,8 @@ import db from "@/app/api/db"
 
 export async function PUT(req: NextRequest) {
   try {
-    const formData = await req.formData();
+    const datos = await req.json()
+    /* const formData = await req.formData();
 
     // Obtener id y archivos
     const id = formData.get("id") as string;
@@ -37,13 +38,13 @@ export async function PUT(req: NextRequest) {
         .webp({ quality: 90 })
         .toFile(outputPath);
 
-      urls.push(`/uploads/${id}/${i + 1}.webp`);
+      urls.push(`/uploads/${id}/${i + 1}.webp`); 
 
-      await db`UPDATE productos SET imagenes = ${urls} WHERE id = ${id}`
+      */
 
-    }
+      await db`UPDATE productos SET imagenes = ${datos.images} WHERE id = ${datos.id}`
 
-    return NextResponse.json({ images: urls});
+    return NextResponse.json({datos_dentro: datos});
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Error al procesar imágenes" }, { status: 500 });

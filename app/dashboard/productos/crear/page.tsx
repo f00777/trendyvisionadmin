@@ -70,7 +70,10 @@ export default function editProduct() {
             credentials: 'include'
             });
 
+
             data = await res.json();
+
+            console.log("respuesta de content.tv: ", data)
 
             const imagenes = data.images;
 

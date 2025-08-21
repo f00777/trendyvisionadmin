@@ -83,6 +83,8 @@ export const schema = z.object({
   imagenes: z.any(),
 })
 
+const CONTENT_URL = process.env.NEXT_PUBLIC_CONTENT_URL || 'http://localhost:3003'
+
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
   {
     accessorKey: "imagenes",
@@ -91,7 +93,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
       return (
         <div className="">
             <img
-            src={row.original.imagenes[0]}
+            src={`${CONTENT_URL}${row.original.imagenes[0]}`}
             alt="Producto"
             className="object-cover rounded border"
           />  
